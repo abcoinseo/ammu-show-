@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Page - Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Interactive Sequence - Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Hind+Siliguri:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
+            --primary-color: #28a745; /* Green for positive/continue */
+            --secondary-color: #dc3545; /* Red for stop/reject */
+            --accent-color: #007bff; /* Blue for final action */
             --light-color: #f8f9fa;
             --dark-color: #343a40;
-            --background-gradient: linear-gradient(135deg, #ece9e6 0%, #ffffff 100%);
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             --transition-speed: 0.4s; /* Control animation speed */
         }
 
@@ -23,113 +24,147 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            /* Added Hind Siliguri for Bengali text */
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             background: var(--background-gradient);
             color: var(--dark-color);
-            overflow: hidden; /* Hide scrollbars if content briefly overflows */
-            padding: 20px; /* Add padding for smaller screens */
+            overflow: hidden;
+            padding: 20px;
         }
 
         .container {
             background-color: var(--light-color);
-            padding: 40px;
-            border-radius: 12px;
+            padding: 40px 50px; /* Increased padding slightly */
+            border-radius: 15px; /* More rounded */
             box-shadow: var(--shadow);
             text-align: center;
-            max-width: 500px;
+            max-width: 550px;
             width: 100%;
-            position: relative; /* Needed for absolute positioning of steps */
-            min-height: 200px; /* Give container some base height */
-            display: flex; /* Use flex to help center content */
+            position: relative;
+            min-height: 220px; /* Adjusted height */
+            display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden; /* Prevent content spill during transitions */
         }
 
         /* --- Step Styling --- */
         .step {
-            width: 100%; /* Take full width of container */
-            position: absolute; /* Position steps on top of each other */
-            top: 50%; /* Start positioning from center */
+            width: 100%;
+            position: absolute;
+            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.95); /* Center and slightly scale down */
+            transform: translate(-50%, -50%) scale(0.95);
             opacity: 0;
-            visibility: hidden; /* Hide element completely */
+            visibility: hidden;
             transition: opacity var(--transition-speed) ease-in-out,
                         transform var(--transition-speed) ease-in-out,
-                        visibility 0s var(--transition-speed); /* Delay visibility change */
+                        visibility 0s var(--transition-speed);
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center content within the step */
+            align-items: center;
         }
 
         .step.active {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1); /* Scale back to normal */
-            visibility: visible; /* Make element visible */
-            transition-delay: 0s; /* Remove delay for visibility when becoming active */
+            transform: translate(-50%, -50%) scale(1);
+            visibility: visible;
+            transition-delay: 0s;
         }
 
         .step p {
-            font-size: 1.2em;
-            margin-bottom: 25px;
+            font-size: 1.3em; /* Slightly larger text */
+            margin-bottom: 30px;
             color: var(--dark-color);
-            font-weight: 400;
+            font-weight: 500; /* Medium weight for Bengali */
+            line-height: 1.6; /* Better line spacing */
         }
 
         .button-group {
             display: flex;
-            gap: 15px; /* Space between buttons */
+            gap: 20px; /* Increased gap */
             justify-content: center;
+            flex-wrap: wrap; /* Allow buttons to wrap on small screens */
         }
 
         button {
-            padding: 12px 25px;
+            padding: 12px 30px; /* Slightly more padding */
             cursor: pointer;
             font-size: 1em;
             font-weight: 600;
             border: none;
             border-radius: 8px;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            background-color: var(--primary-color);
             color: white;
-            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+            min-width: 100px; /* Ensure minimum button width */
+            text-align: center;
         }
 
         button:hover {
-            background-color: #0056b3; /* Darker shade on hover */
-            transform: translateY(-2px); /* Slight lift */
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+            transform: translateY(-3px); /* Slightly more lift */
         }
 
-        button.secondary {
-            background-color: var(--secondary-color);
-            box-shadow: 0 2px 5px rgba(108, 117, 125, 0.3);
+        /* Specific Button Colors based on action */
+        button.btn-yes {
+            background-color: var(--secondary-color); /* Yes leads to rejection */
+            box-shadow: 0 3px 7px rgba(220, 53, 69, 0.4);
+        }
+        button.btn-yes:hover {
+            background-color: #c82333; /* Darker red */
+             box-shadow: 0 5px 10px rgba(220, 53, 69, 0.5);
         }
 
-        button.secondary:hover {
-            background-color: #5a6268;
-            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+        button.btn-no {
+            background-color: var(--primary-color); /* No leads forward */
+            box-shadow: 0 3px 7px rgba(40, 167, 69, 0.4);
         }
+        button.btn-no:hover {
+            background-color: #218838; /* Darker green */
+            box-shadow: 0 5px 10px rgba(40, 167, 69, 0.5);
+        }
+
+        button.btn-action { /* For the final image trigger */
+             background-color: var(--accent-color);
+             box-shadow: 0 3px 7px rgba(0, 123, 255, 0.4);
+             padding: 15px 35px; /* Bigger action button */
+             font-size: 1.1em;
+        }
+        button.btn-action:hover {
+             background-color: #0056b3;
+             box-shadow: 0 5px 10px rgba(0, 123, 255, 0.5);
+        }
+
+         button.btn-restart { /* For the restart button */
+             background-color: var(--secondary-color);
+             box-shadow: 0 3px 7px rgba(108, 117, 125, 0.4);
+             margin-top: 15px; /* Add space above restart */
+        }
+        button.btn-restart:hover {
+             background-color: #5a6268;
+             box-shadow: 0 5px 10px rgba(108, 117, 125, 0.5);
+        }
+
 
         /* --- Image Display Styling --- */
         #image-display img {
-            max-width: 100%; /* Ensure image fits container */
-            max-height: 300px; /* Limit image height */
+            max-width: 100%;
+            max-height: 350px; /* Allow slightly larger image */
             height: auto;
             margin-top: 15px;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-         /* Style for the trigger button */
-         #show-image-trigger {
-            padding: 15px 30px;
-            font-size: 1.1em;
-         }
+        /* Rejection Message Styling */
+        #rejection-message p {
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 1.4em;
+        }
 
     </style>
 </head>
@@ -137,33 +172,58 @@
 
     <div class="container">
 
-        <!-- Initial Question Block -->
-        <div id="initial-question" class="step active"> <!-- Start with this one active -->
-            <p> তুমি কি ইমেজটা দেখতে চাও?</p>
+        <!-- Step 1: Initial Question -->
+        <div id="initial-question" class="step active">
+            <p>তুমি কি ইমেজটা দেখতে চাও?</p>
             <div class="button-group">
-                <button id="initial-yes">Yes</button>
-                <button id="initial-no" class="secondary">No</button>
+                <button id="initial-yes" class="btn-yes">No</button> <!-- Yes = Reject -->
+                <button id="initial-no" class="btn-no">Yes</button>   <!-- No = Continue -->
             </div>
         </div>
 
-        <!-- Second Question Block -->
+        <!-- Step 2: Marbe Question -->
         <div id="second-question" class="step">
             <p>তুমি কি আমাকে মারবে?</p>
             <div class="button-group">
-                <button id="second-yes">Yes</button>
-                <button id="second-no" class="secondary">No</button>
+                <button id="second-yes" class="btn-yes">Yes</button> <!-- Yes = Reject -->
+                <button id="second-no" class="btn-no">No</button>   <!-- No = Continue -->
             </div>
         </div>
 
-        <!-- Image Trigger Block -->
-        <div id="image-trigger-block" class="step">
-             <button id="show-image-trigger">Click this to image show</button>
+        <!-- Step 3: Shorom Question -->
+        <div id="third-question" class="step">
+            <p>তুমি কি আমাকে শরম দিবা?</p>
+            <div class="button-group">
+                <button id="third-yes" class="btn-yes">Yes</button> <!-- Yes = Reject -->
+                <button id="third-no" class="btn-no">No</button>   <!-- No = Continue -->
+            </div>
         </div>
 
-        <!-- Image Display Area -->
+        <!-- Step 4: Bolbe Question -->
+        <div id="fourth-question" class="step">
+            <p>তুমি কি কাউকে বলবে (রুমান আপু, সাদিয়া বা কাউকে)?</p>
+            <div class="button-group">
+                <button id="fourth-yes" class="btn-yes">Yes</button> <!-- Yes = Reject -->
+                <button id="fourth-no" class="btn-no">No</button>   <!-- No = Trigger -->
+            </div>
+        </div>
+
+        <!-- Step 5: Image Trigger Block -->
+        <div id="image-trigger-block" class="step">
+             <button id="show-image-trigger" class="btn-action">Click this to image show</button>
+        </div>
+
+        <!-- Step 6: Image Display Area -->
         <div id="image-display" class="step">
-            <!-- Content will be added by JS, or keep image here -->
              <img id="the-image" src="https://i.postimg.cc/0j3mgMff/queen-like-pro.png" alt="Displayed Image">
+             <!-- Image will hide automatically via JS -->
+        </div>
+
+        <!-- Step 7: Rejection Message -->
+        <div id="rejection-message" class="step">
+            <p>তুমি ইমেজটি দেখতে পারবে না।</p>
+            <!-- Optional: Add a button to restart -->
+             <button id="restart-button" class="btn-restart">Try Again</button>
         </div>
 
     </div>
@@ -172,15 +232,23 @@
         // Get references to the step divs
         const initialQuestionDiv = document.getElementById('initial-question');
         const secondQuestionDiv = document.getElementById('second-question');
+        const thirdQuestionDiv = document.getElementById('third-question');
+        const fourthQuestionDiv = document.getElementById('fourth-question');
         const imageTriggerBlock = document.getElementById('image-trigger-block');
         const imageDisplayDiv = document.getElementById('image-display');
+        const rejectionMessageDiv = document.getElementById('rejection-message');
 
-        // Get references to buttons
+        // Get references to ALL buttons involved in navigation
         const initialYesBtn = document.getElementById('initial-yes');
-        const initialNoBtn = document.getElementById('initial-no'); // Added action for completeness
-        const secondYesBtn = document.getElementById('second-yes'); // Added action for completeness
+        const initialNoBtn = document.getElementById('initial-no');
+        const secondYesBtn = document.getElementById('second-yes');
         const secondNoBtn = document.getElementById('second-no');
+        const thirdYesBtn = document.getElementById('third-yes');
+        const thirdNoBtn = document.getElementById('third-no');
+        const fourthYesBtn = document.getElementById('fourth-yes');
+        const fourthNoBtn = document.getElementById('fourth-no');
         const showImageTriggerBtn = document.getElementById('show-image-trigger');
+        const restartBtn = document.getElementById('restart-button'); // Restart button
 
         // Get reference to the image element itself
         const theImage = document.getElementById('the-image');
@@ -190,50 +258,45 @@
             if (hideStep) {
                 hideStep.classList.remove('active');
             }
-             // Need a small delay to allow CSS transition out before next one starts
-            // Or rely on the CSS transition delays and visibility property
-            showStep.classList.add('active');
+            // Small delay to allow fade-out transition before fade-in starts
+            setTimeout(() => {
+                if (showStep) {
+                    showStep.classList.add('active');
+                }
+            }, 50); // Adjust timing slightly if needed, should be less than transition speed
         }
 
         // --- Event Listeners ---
 
-        // 1. Initial "Yes"
-        initialYesBtn.addEventListener('click', () => {
-            switchStep(initialQuestionDiv, secondQuestionDiv);
-        });
+        // YES Answers -> Lead to Rejection
+        initialYesBtn.addEventListener('click', () => switchStep(initialQuestionDiv, rejectionMessageDiv));
+        secondYesBtn.addEventListener('click', () => switchStep(secondQuestionDiv, rejectionMessageDiv));
+        thirdYesBtn.addEventListener('click', () => switchStep(thirdQuestionDiv, rejectionMessageDiv));
+        fourthYesBtn.addEventListener('click', () => switchStep(fourthQuestionDiv, rejectionMessageDiv));
 
-        // 2. Initial "No" (Example: just end or show a message)
-        initialNoBtn.addEventListener('click', () => {
-            alert("Okay, no image then!");
-            // Or you could hide initialQuestionDiv and show a final message step
-             initialQuestionDiv.classList.remove('active'); // Hide the current step
-             // Maybe add a final message div and activate it here
-        });
+        // NO Answers -> Lead to Next Step or Trigger
+        initialNoBtn.addEventListener('click', () => switchStep(initialQuestionDiv, secondQuestionDiv));
+        secondNoBtn.addEventListener('click', () => switchStep(secondQuestionDiv, thirdQuestionDiv));
+        thirdNoBtn.addEventListener('click', () => switchStep(thirdQuestionDiv, fourthQuestionDiv));
+        fourthNoBtn.addEventListener('click', () => switchStep(fourthQuestionDiv, imageTriggerBlock));
 
-        // 3. Second "Yes" (Example: show a message)
-        secondYesBtn.addEventListener('click', () => {
-            alert("Why would you say that? :(");
-             secondQuestionDiv.classList.remove('active'); // Hide the current step
-              // Maybe add a final message div and activate it here
-        });
-
-        // 4. Second "No"
-        secondNoBtn.addEventListener('click', () => {
-            switchStep(secondQuestionDiv, imageTriggerBlock);
-        });
-
-        // 5. "Click this to image show" button
+        // Image Trigger Button
         showImageTriggerBtn.addEventListener('click', () => {
-            // Show the image step
             switchStep(imageTriggerBlock, imageDisplayDiv);
 
             // Set a timer to hide the image step after 3 seconds
             setTimeout(() => {
                 imageDisplayDiv.classList.remove('active');
-                 // Optionally, bring back the trigger button or go to another step
-                 // Example: Go back to the start after image hides
-                 // setTimeout(() => switchStep(null, initialQuestionDiv), 500); // Add delay matching transition
-            }, 300); // 3000 milliseconds = 3 seconds
+                // After hiding, go back to the start after a short delay for the fade-out
+                setTimeout(() => {
+                    switchStep(null, initialQuestionDiv); // Go back to start
+                }, 400); // Delay should be >= transition-speed
+            }, 300); // 3 seconds display time
+        });
+
+         // Restart Button (from rejection message)
+        restartBtn.addEventListener('click', () => {
+            switchStep(rejectionMessageDiv, initialQuestionDiv);
         });
 
     </script>
